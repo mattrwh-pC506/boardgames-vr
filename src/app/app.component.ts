@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  textToLog: string = "Logger";
+
+  log(e) {
+    console.log(e.type)
+    this.textToLog = e.type;
+  }
 }

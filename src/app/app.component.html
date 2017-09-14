@@ -1,36 +1,70 @@
-<a-scene>
+<a-scene inspector="url: https://aframe.io/releases/0.3.0/aframe-inspector.min.js"
+         physics
+         environment="preset: tron; shadow: true">
   <a-assets>
-    <a-asset-item id="table-obj"
-                  src="./assets/obj_table3a.obj"></a-asset-item>
-    <a-asset-item id="table-mtl"
-                  src="./assets/obj_table3a.mtl"></a-asset-item>
-    <a-asset-item id="red-hero-obj"
-                  src="./assets/red-knight.obj"></a-asset-item>
-    <a-asset-item id="red-hero-mtl"
-                  src="./assets/red-knight.mtl"></a-asset-item>
+    <a-asset id="table-obj"
+             src="./assets/obj_table3a.obj"></a-asset>
+    <a-asset id="table-mtl"
+             src="./assets/obj_table3a.mtl"></a-asset>
+    <a-asset id="red-hero-obj"
+             src="./assets/red-knight.obj"></a-asset>
+    <a-asset id="red-hero-mtl"
+             src="./assets/red-knight.mtl"></a-asset>
+
+    <a-mixin id="red-hero"
+             obj-model="obj: #red-hero-obj; mtl: #red-hero-mtl"
+             scale="0.01 0.01 0.01"
+             position="0 0.7 -1"
+             rotation="0 -45 0"
+             hoverable
+             grabbable="startButtons: gripdown; endButtons: gripup; usePhysics: only"
+             stretchable
+             drag-droppable
+             dynamic-body
+             shadow>
+    </a-mixin>
+
+    <a-mixin id="red-hero-hovered"
+             material="opacity: 0.7; transparent: true">
+    </a-mixin>
+    <a-mixin id="red-hero-dragover"
+             material="wireframe: true;"></a-mixin>
   </a-assets>
 
-  <a-locomotor>
-    <!-- Make sure your super-hands entities also have controller and collider components -->
-    <a-entity hand-controls="left"
-              super-hands
-              sphere-collider="objects: a-box"></a-entity>
-    <a-entity hand-controls="right"
-              super-hands
-              sphere-collider="objects: a-box"></a-entity>
-  </a-locomotor>
+  <a-sky color="#c1e6ff"></a-sky>
+
+  <a-text [attr.value]="textToLog"
+          color="black"
+          position="0 2.5 -5">
+  </a-text>
+
+  <a-entity hand-controls="left"
+            id="lhand"
+            super-hands
+            position="0 -0.25 0"
+            sphere-collider="objects: .red-hero">
+  </a-entity>
+  <a-entity hand-controls="right"
+            id="rhand"
+            super-hands
+            position="0 -0.25 0"
+            sphere-collider="objects: .red-hero">
+  </a-entity>
+  <a-camera position="0 -0.25 0">
+    <a-entity raycaster
+              position="0 0 -0.5"
+              geometry="primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32"
+              material="color: white; shader: flat">
+    </a-entity>
+  </a-camera>
 
   <a-entity obj-model="obj: #table-obj; mtl: #table-mtl"
             scale="0.1 0.1 0.1"
-            position="0 0 -2"
-            rotation="0 90 0"></a-entity>
-
-  <a-entity obj-model="obj: #red-hero-obj; mtl: #red-hero-mtl"
-            scale="0.01 0.01 0.01"
-            position="0 0.7 -2"
-            rotation="0 -45 0"
-            grabbable
-            stretchable
-            drag-droppable>
+            position="0 0 -1"
+            rotation="0 90 0"
+            static-body>
+  </a-entity>
+  <a-entity class="red-hero"
+            mixin="red-hero">
   </a-entity>
 </a-scene>
